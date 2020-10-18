@@ -4,41 +4,41 @@ const Moleculer = require("moleculer");
 
 
 @Service({
-  name: 'urls'
+	name: 'urls'
 })
 class UrlsService extends Moleculer.Service {
-  // // Optional constructor
-  constructor(...args) {
+	// Optional constructor
+	constructor(...args) {
 		super(...args);
-  }
+	}
 
-  /**
+	/**
  * 
  * @param {import('moleculer').Context} ctx 
  */
-  @Action({
-    rest: "GET /funa",
-  })
-  FunA(ctx) {
-    this.logger.info('this is acion a ');
-    return 'this action a';
-  }
+	@Action({
+		rest: "GET /funa",
+	})
+	FunA(ctx) {
+		this.logger.info('this is acion a ');
+		return 'this action a';
+	}
 
 
-  /**
+	/**
    * 
    * @param {import('moleculer').Context} ctx 
    */
-  @Action({
-    rest: "GET /funb"
-  })
-  async FunB(ctx) {
-    const funa = this.FunA();
-    this.logger.info('fun a', funa);
-    const actiona = await this.actions.FunA();
-    this.logger.info('action a', actiona);
-    return 'this is action b';
-  }
+	@Action({
+		rest: "GET /funb"
+	})
+	async FunB(ctx) {
+		const funa = this.FunA();
+		this.logger.info('fun a', funa);
+		const actiona = await this.actions.FunA();
+		this.logger.info('action a', actiona);
+		return 'this is action b';
+	}
 }
 
 module.exports = UrlsService;
