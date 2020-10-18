@@ -20,7 +20,7 @@ class UrlsService extends Moleculer.Service {
 		rest: "GET /funa",
 	})
 	FunA(ctx) {
-		this.logger.info('this is acion a ');
+		this.logger.info('this is action a ');
 		return 'this action a';
 	}
 

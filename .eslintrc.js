@@ -20,10 +20,10 @@ module.exports = {
             "tab",
             { "SwitchCase": 1 }
         ],
-        "quotes": [
-            "warn",
-            "double"
-        ],
+        // "quotes": [
+        //     "warn",
+        //     "double"
+        // ],
         "semi": [
             "error",
             "always"
