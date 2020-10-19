@@ -1,20 +1,17 @@
 "use strict";
-
+const { Service, Action, Event, Method } = require("moleculer-decorators");
+const Moleculer = require("moleculer");
 const DbMixin = require("../mixins/db.mixin");
 
-/**
- * @typedef {import('moleculer').Context} Context Moleculer's Context
- */
-
-module.exports = {
-	name: "products",
-	// version: 1
-
+@Service({
+	name: 'products',
+	// constructOverride: false,
+	// skipHandler: true,
+	// version: 1,
 	/**
-	 * Mixins
-	 */
+ * Mixins
+ */
 	mixins: [DbMixin("products")],
-
 	/**
 	 * Settings
 	 */
@@ -50,84 +47,78 @@ module.exports = {
 			}
 		}
 	},
+})
+class ProductsService extends Moleculer.Service {
+	// Optional constructor
+	// constructor(...args) {
+	// 	// console.log('args', args);
+	// 	super(...args);
+	// 	// this.settings = {
+	// 	// 	name: "products"
+	// 	// };
+	// }
 
 	/**
-	 * Actions
+	 * The "moleculer-db" mixin registers the following actions:
+	 *  - list
+	 *  - find
+	 *  - count
+	 *  - create
+	 *  - insert
+	 *  - update
+	 *  - remove
 	 */
-	actions: {
-		/**
-		 * The "moleculer-db" mixin registers the following actions:
-		 *  - list
-		 *  - find
-		 *  - count
-		 *  - create
-		 *  - insert
-		 *  - update
-		 *  - remove
-		 */
-
-		// --- ADDITIONAL ACTIONS ---
-
-		/**
-		 * Increase the quantity of the product item.
-		 */
-		increaseQuantity: {
-			rest: "PUT /:id/quantity/increase",
-			params: {
-				id: "string",
-				value: "number|integer|positive"
-			},
-			async handler(ctx) {
-				const doc = await this.adapter.updateById(ctx.params.id, { $inc: { quantity: ctx.params.value } });
-				const json = await this.transformDocuments(ctx, ctx.params, doc);
-				await this.entityChanged("updated", json, ctx);
-
-				return json;
-			}
+	@Action({
+		rest: "PUT /:id/quantity/increase",
+		params: {
+			id: "string",
+			value: "number|integer|positive"
 		},
+	})
+	// --- ADDITIONAL ACTIONS ---
+	async increaseQuantity(ctx) {
+		const doc = await this.adapter.updateById(ctx.params.id, { $inc: { quantity: ctx.params.value } });
+		const json = await this.transformDocuments(ctx, ctx.params, doc);
+		await this.entityChanged("updated", json, ctx);
 
-		/**
-		 * Decrease the quantity of the product item.
-		 */
-		decreaseQuantity: {
-			rest: "PUT /:id/quantity/decrease",
-			params: {
-				id: "string",
-				value: "number|integer|positive"
-			},
-			/** @param {Context} ctx  */
-			async handler(ctx) {
-				const doc = await this.adapter.updateById(ctx.params.id, { $inc: { quantity: -ctx.params.value } });
-				const json = await this.transformDocuments(ctx, ctx.params, doc);
-				await this.entityChanged("updated", json, ctx);
+		return json;
+	}
+	
+	@Action({
+		rest: "PUT /:id/quantity/decrease",
+		params: {
+			id: "string",
+			value: "number|integer|positive"
+		},
+	})
+	async decreaseQuantity(ctx) {
+		const doc = await this.adapter.updateById(ctx.params.id, { $inc: { quantity: -ctx.params.value } });
+		const json = await this.transformDocuments(ctx, ctx.params, doc);
+		await this.entityChanged("updated", json, ctx);
 
-				return json;
-			}
-		}
-	},
+		return json;
+	}
+	/**
+	 * Loading sample data to the collection.
+	 * It is called in the DB.mixin after the database
+	 * connection establishing & the collection is empty.
+	 */
+	@Method
+	async seedDB() {
+		await this.adapter.insertMany([
+			{ name: "Samsung Galaxy S10 Plus", quantity: 10, price: 704 },
+			{ name: "iPhone 11 Pro", quantity: 25, price: 999 },
+			{ name: "Huawei P30 Pro", quantity: 15, price: 679 },
+		]);
+	}
 
 	/**
-	 * Methods
-	 */
-	methods: {
-		/**
-		 * Loading sample data to the collection.
-		 * It is called in the DB.mixin after the database
-		 * connection establishing & the collection is empty.
-		 */
-		async seedDB() {
-			await this.adapter.insertMany([
-				{ name: "Samsung Galaxy S10 Plus", quantity: 10, price: 704 },
-				{ name: "iPhone 11 Pro", quantity: 25, price: 999 },
-				{ name: "Huawei P30 Pro", quantity: 15, price: 679 },
-			]);
-		}
-	},
-
-	/**
-	 * Fired after database connection establishing.
-	 */
+ * Fired after database connection establishing.
+ */
+	// @Event()
 	async afterConnected() {
 		// await this.adapter.collection.createIndex({ name: 1 });
 	}
-};
+}
+
+module.exports = ProductsService;

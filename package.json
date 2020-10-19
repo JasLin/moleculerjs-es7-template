@@ -1,5 +1,5 @@
 {
-  "name": "demo-typescript",
+  "name": "moleculerjs-es7-template",
   "version": "1.0.0",
   "description": "My Moleculer-based microservices project",
   "scripts": {

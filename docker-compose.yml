@@ -5,7 +5,7 @@ services:
   api:
     build:
       context: .
-    image: demo-typescript
+    image: moleculerjs-es7-template
     env_file: docker-compose.env
     environment:
       SERVICES: api
@@ -22,7 +22,7 @@ services:
   greeter:
     build:
       context: .
-    image: demo-typescript
+    image: moleculerjs-es7-template
     env_file: docker-compose.env
     environment:
       SERVICES: greeter
@@ -34,7 +34,7 @@ services:
   products:
     build:
       context: .
-    image: demo-typescript
+    image: moleculerjs-es7-template
     env_file: docker-compose.env
     environment:
       SERVICES: products
