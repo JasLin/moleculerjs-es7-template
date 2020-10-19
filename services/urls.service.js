@@ -1,10 +1,11 @@
 "use strict";
 const { Service, Action, Event, Method } = require("moleculer-decorators");
 const Moleculer = require("moleculer");
-
+const DbMixin = require("../mixins/db.mixin");
 
 @Service({
-	name: 'urls'
+	name: 'urls',
+	mixins: [DbMixin("urls")],
 })
 class UrlsService extends Moleculer.Service {
 	// Optional constructor

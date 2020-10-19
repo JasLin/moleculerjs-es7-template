@@ -18,7 +18,7 @@ data:
   
   CACHER: Memory
   
-  MONGO_URI: mongodb://mongo/demo-typescript
+  MONGO_URI: mongodb://mongo/moleculerjs-es7-template
 
 ---
 #########################################################
@@ -45,7 +45,7 @@ metadata:
   name: ingress
 spec:
   rules:
-  - host: demo-typescript.127.0.0.1.nip.io
+  - host: moleculerjs-es7-template.127.0.0.1.nip.io
     http:
       paths:
       - path: /
@@ -73,7 +73,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: demo-typescript
+        image: moleculerjs-es7-template
         envFrom:
         - configMapRef:
             name: common-env
@@ -101,7 +101,7 @@ spec:
     spec:
       containers:
       - name: greeter
-        image: demo-typescript
+        image: moleculerjs-es7-template
         envFrom:
         - configMapRef:
             name: common-env
@@ -129,7 +129,7 @@ spec:
     spec:
       containers:
       - name: products
-        image: demo-typescript
+        image: moleculerjs-es7-template
         envFrom:
         - configMapRef:
             name: common-env
